@@ -1,4 +1,5 @@
 /dataset_2023
-/results
+/results/test/
+/results/train/
 /.dev
 *.zip
