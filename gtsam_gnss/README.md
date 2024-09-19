@@ -1,0 +1,2 @@
+# gtsam_gnss
+This repository is a small set of custom factors and MATLAB wrappers that use GTSAM for GNSS processing. As the repository is not yet complete, only pre-built binaries are currently available. Source code and build instructions will be provided as soon as the work is complete.
