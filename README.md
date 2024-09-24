@@ -10,8 +10,8 @@
 ```
 Taro Suzuki, "An Open-Source Factor Graph Optimization Package for GNSS and IMU Integration in Smartphones," in Proceedings of the 37th International Technical Meeting of the Satellite Division of The Institute of Navigation (ION GNSS+ 2024), 2024.
 ```
-- Paper link: TBD
-- Presentation link: TBD
+- [Paper](http://www.taroz.net/paper/IONGNSS2024_GSDC.pdf)
+- [Presentation](http://www.taroz.net/paper/IONGNSS2024_GSDC_ppt.pdf)
 
 # Test environments
 - Ubuntu 20.04
