@@ -1,6 +1,6 @@
 # Update
-- v1.0 (Sep 24, 2024): First public version, using GTSAM 4.0.3 in Ubuntu 20.04, pre-built binary gtsam_gnss distributed.
-- v2.0 (Nov 30, 2024): Upgraded to GTSAM 4.3a in Ubuntu 22.04, [gtsam_gnss](https://github.com/taroz/gtsam_gnss) was released in a separate repository, and Windows environment support added.
+- **Sep 24, 2024**: First public version, using GTSAM 4.0.3 in Ubuntu 20.04, pre-built binary gtsam_gnss distributed.
+- **Nov 30, 2024**: Upgraded to GTSAM 4.3a in Ubuntu 22.04, [gtsam_gnss](https://github.com/taroz/gtsam_gnss) was released in a separate repository, and Windows environment support added.
 
 # Overview
 - This repository provides the source code to reproduce the results of the [Google Smartphone Decimeter Challenge 2023](https://www.kaggle.com/competitions/smartphone-decimeter-2023) on Kaggle
@@ -80,3 +80,20 @@ matlab
 5. The submission file for Kaggle is generated in `results` directory. If you have Kaggle account, let's submit the estimation result to the [Google Smartphone Decimeter Challenge 2023](https://www.kaggle.com/competitions/smartphone-decimeter-2023) and evaluate the accuracy. You should get the following results.
 ![](https://github.com/taroz/Misc/blob/master/data/kaggle/gsdc2023_score.jpg?raw=true)
 
+# Citation
+- Google Smartphone Decimeter Challenge 2023
+```
+Taro Suzuki, "An Open-Source Factor Graph Optimization Package for GNSS and IMU Integration in Smartphones," in Proceedings of the 37th International Technical Meeting of the Satellite Division of The Institute of Navigation (ION GNSS+ 2024), 2024.
+```
+- Google Smartphone Decimeter Challenge 2022
+```
+Taro Suzuki, "Precise Position Estimation Using Smartphone Raw GNSS Data Based on Two-Step Optimization," Sensors 23, no. 3: 1205, 2023. doi.org/10.3390/s23031205
+```
+- [gtsam-gnss](https://github.com/taroz/gtsam_gnss)
+```
+Taro Suzuki, "Open-Source Factor Graph Optimization Package for GNSS: Examples and Applications," 2025 IEEE/ION Position, Location and Navigation Symposium (PLANS), (accepted)
+```
+- [MatRTKLIB](https://github.com/taroz/MatRTKLIB)
+```
+Under review
+```
