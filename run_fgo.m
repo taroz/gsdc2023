@@ -24,7 +24,8 @@ optStat = repmat(struct("OptTime",NaN,"OptIter",NaN,"OptError",NaN,"Score",NaN),
 
 %% Run FGO
 tic;
-% Use parfor to speed up. The figure will not be displayed
+% If you have a license for the Parallel Computing Toolbox, you can use 
+% 'parfor' instead of 'for' to significantly reduce computation time.
 parfor i=1:n
     % Trip path
     setting = settings(i,:);

@@ -9,9 +9,11 @@ end
 
 %% Path
 addpath ./functions/
-addpath ./gtsam_gnss/
-addpath /usr/local/gtsam_toolbox/
-
+if ispc
+    addpath C:\'Program Files (x86)'\GTSAM\gtsam_toolbox\
+else
+    addpath /usr/local/gtsam_toolbox/
+end
 
 %% Load data
 course = setting.Course; phone = setting.Phone;
@@ -95,8 +97,8 @@ sigma_motion = prm.sigma_motion*ones(3,1);
 noise_motion = noise_sigmas(sigma_motion);
 
 % Clock factor
-noise_clk = noise_sigmas(prm.sigma_motion_clk*ones(7,1));
-noise_clkjump = noise_sigmas([Inf; prm.sigma_motion_clk*ones(6,1)]);
+noise_clk = noise_sigmas(prm.sigma_motion_clk);
+noise_clkjump = noise_sigmas(Inf);
 
 % Between clock factor
 sigma_between_clk = [prm.sigma_between_clk_gps; prm.sigma_between_clk_others*ones(6,1)];
@@ -142,13 +144,13 @@ for i=progress(is:ie)
                 if ~isnan(obsr.(f).resPc(i,j))
                     noise = noise_sigmas(obserr.(f).P(i,j));
                     noise_rubust = noise_robust(prm.P_kernel, noise);
-                    graph.add(gtsam_gnss.PseudorangeFactorWithClock(keyX, keyC, losvec, obsr.(f).resPc(i,j), sigtype(j), orgx, noise_rubust));
+                    graph.add(gtsam_gnss.PseudorangeFactor_XC(keyX, keyC, losvec, obsr.(f).resPc(i,j), sigtype(j), orgx, noise_rubust));
                 end
                 % Doppler factor
                 if ~isnan(obsr.(f).resD(i,j))
                     noise = noise_sigmas(obserr.(f).D(i,j));
                     noise_rubust = noise_robust(prm.D_kernel, noise);
-                    graph.add(gtsam_gnss.DopplerFactorWithClockV(keyV, keyD, losvec, obsr.(f).resD(i,j), orgv, noise_rubust));
+                    graph.add(gtsam_gnss.DopplerFactor_VD(keyV, keyD, losvec, obsr.(f).resD(i,j), orgv, noise_rubust));
                 end
             end
         end
@@ -169,14 +171,14 @@ for i=progress(is:ie-1)
 
     if dtgps<prm.time_diff_th
         % Motion factor
-        graph.add(gtsam_gnss.MotionFactor(keyX1, keyX2, keyV1, keyV2, dtgps, noise_motion));
+        graph.add(gtsam_gnss.MotionFactor_XXVV(keyX1, keyX2, keyV1, keyV2, dtgps, noise_motion));
 
         % Clock factor
         if ~ismember(phone,["sm-a205u","sm-a505u","samsunga325g"])
             if obs.clkjump(i+1)
-                graph.add(gtsam_gnss.ClockFactor(keyC1, keyC2, keyD1, keyD2, dtgps, noise_clkjump));
+                graph.add(gtsam_gnss.ClockFactor_CCDD(keyC1, keyC2, keyD1, keyD2, dtgps, noise_clkjump));
             else
-                graph.add(gtsam_gnss.ClockFactor(keyC1, keyC2, keyD1, keyD2, dtgps, noise_clk));
+                graph.add(gtsam_gnss.ClockFactor_CCDD(keyC1, keyC2, keyD1, keyD2, dtgps, noise_clk));
             end
             % Between clock factor
             if obs.clkjump(i+1)
@@ -191,17 +193,17 @@ for i=progress(is:ie-1)
             losvec = [ee(i,j),en(i,j),eu(i,j)]';
             for f=FTYPE
                 if ~isempty(obsr.(f))
-                    sigtype = sysfreq2sigtype(obsr.sys,f);
                     % TDCP factor
                     if ~isnan(obsr.(f).resL(i,j)) && ~isnan(obsr.(f).resL(i+1,j)) && ~obs.clkjump(i+1)
+                        tdcp =  obsr.(f).resL(i+1,j)-obsr.(f).resL(i,j);
                         noise = noise_sigmas(obserr.(f).L(i,j));
                         noise_rubust = noise_robust(prm.L_kernel, noise);
                         if ismember(phone,["sm-a205u","sm-a217m","sm-a505g","sm-a600t","sm-a505u"])
-                            graph.add(gtsam_gnss.TDCPFactorWithDClock(keyX1, keyX2, keyD1, keyD2, losvec, obsr.(f).resL(i,j)-prm.Loffset, obsr.(f).resL(i+1,j), orgx1, orgx2, noise_rubust));
+                            graph.add(gtsam_gnss.TDCPFactor_XXDD(keyX1, keyX2, keyD1, keyD2, losvec, tdcp+prm.Loffset, orgx1, orgx2, noise_rubust));
                         elseif ismember(phone,"samsunga325g")
-                            graph.add(gtsam_gnss.TDCPFactorWithDClock(keyX1, keyX2, keyD1, keyD2, losvec, obsr.(f).resL(i,j), obsr.(f).resL(i+1,j), orgx1, orgx2, noise_rubust));
+                            graph.add(gtsam_gnss.TDCPFactor_XXDD(keyX1, keyX2, keyD1, keyD2, losvec, tdcp, orgx1, orgx2, noise_rubust));
                         else
-                            graph.add(gtsam_gnss.TDCPFactorWithClock(keyX1, keyX2, keyC1, keyC2, losvec, obsr.(f).resL(i,j), obsr.(f).resL(i+1,j), sigtype(j), orgx1, orgx2, noise_rubust));
+                            graph.add(gtsam_gnss.TDCPFactor_XXCC(keyX1, keyX2, keyC1, keyC2, losvec, tdcp, orgx1, orgx2, noise_rubust));
                         end
                     end
                 end
