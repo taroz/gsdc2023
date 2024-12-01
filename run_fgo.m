@@ -26,7 +26,7 @@ optStat = repmat(struct("OptTime",NaN,"OptIter",NaN,"OptError",NaN,"Score",NaN),
 tic;
 % If you have a license for the Parallel Computing Toolbox, you can use 
 % 'parfor' instead of 'for' to significantly reduce computation time.
-parfor i=1:n
+for i=1:n
     % Trip path
     setting = settings(i,:);
     trippath = datapath+setting.Course+"/"+setting.Phone+"/";
