@@ -44,6 +44,7 @@ mkdir build && cd build
 cmake ..
 make
 sudo make install
+sudo ldconfig
 ```
 
 - [MatRTKLIB](https://github.com/taroz/MatRTKLIB):
@@ -76,8 +77,13 @@ unzip dataset_2023.zip
 export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libstdc++.so.6
 matlab
 ```
-4. Run `run_fgo.m` in MATLAB.
-5. The submission file for Kaggle is generated in `results` directory. If you have Kaggle account, let's submit the estimation result to the [Google Smartphone Decimeter Challenge 2023](https://www.kaggle.com/competitions/smartphone-decimeter-2023) and evaluate the accuracy. You should get the following results.
+5. Before running MATLAB script, please check that the following two paths have been added to the MATLAB search path.
+```shell
+/path/to/MatRTKLIB
+/path/to/MatlabProgressBar
+```
+6. Run `run_fgo.m` in MATLAB.
+7. The submission file for Kaggle is generated in `results` directory. If you have Kaggle account, let's submit the estimation result to the [Google Smartphone Decimeter Challenge 2023](https://www.kaggle.com/competitions/smartphone-decimeter-2023) and evaluate the accuracy. You should get the following results.
 ![](https://github.com/taroz/Misc/blob/master/data/kaggle/gsdc2023_score.jpg?raw=true)
 
 # Citation
