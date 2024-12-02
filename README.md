@@ -24,7 +24,7 @@ Taro Suzuki, "An Open-Source Factor Graph Optimization Package for GNSS and IMU 
 
 # Requirements
 - [GTSAM](https://github.com/borglab/gtsam):
-Factor graph optimization library. Due to a problem with the MATLAB wrapper, please clone [GTSAM from my repository](https://github.com/taroz/gtsam-4.3a) instead of the original GTSAM and build it using the following procedure. For Windows, please refer to [this](https://github.com/taroz/gtsam_gnss/BUILD_WINDOWS.md) build procedure.
+Factor graph optimization library. Due to a problem with the MATLAB wrapper, please clone [GTSAM from my repository](https://github.com/taroz/gtsam-4.3a) instead of the original GTSAM and build it using the following procedure. For Windows, please refer to [this](https://github.com/taroz/gtsam_gnss/blob/main/BUILD_WINDOWS.md) build procedure.
 ```shell
 sudo apt-get install -y git build-essential cmake libboost-all-dev libtbb-dev python3-pip
 pip install pyparsing
@@ -36,7 +36,7 @@ make -j$(nproc)
 sudo make install
 ```
 
-- [gtsam-gnss](https://github.com/taroz/gtsam_gnss): A small set of custom factors and MATLAB wrappers that use GTSAM for GNSS processing. For Windows, please refer to [this](https://github.com/taroz/gtsam_gnss/BUILD_WINDOWS.md) build procedure.
+- [gtsam-gnss](https://github.com/taroz/gtsam_gnss): A small set of custom factors and MATLAB wrappers that use GTSAM for GNSS processing. For Windows, please refer to [this](https://github.com/taroz/gtsam_gnss/blob/main/BUILD_WINDOWS.md) build procedure.
 ```shell
 git clone https://github.com/taroz/gtsam_gnss.git
 cd gtsam_gnss
