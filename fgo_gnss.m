@@ -97,14 +97,8 @@ sigma_motion = prm.sigma_motion*ones(3,1);
 noise_motion = noise_sigmas(sigma_motion);
 
 % Clock factor
-noise_clk = noise_sigmas(prm.sigma_motion_clk);
-noise_clkjump = noise_sigmas(Inf);
-
-% Between clock factor
-sigma_between_clk = [prm.sigma_between_clk_gps; prm.sigma_between_clk_others*ones(6,1)];
-noise_between_clk = noise_sigmas(sigma_between_clk);
-sigma_between_clkjump = [Inf; prm.sigma_between_clk_others*ones(6,1)];
-noise_between_clkjump = noise_sigmas(sigma_between_clkjump);
+noise_clk = noise_sigmas([prm.sigma_motion_clk; zeros(6,1)]);
+noise_clkjump = noise_sigmas([Inf; zeros(6,1)]);
 
 %% Graph Construction
 % Create a factor graph container
@@ -180,12 +174,6 @@ for i=progress(is:ie-1)
             else
                 graph.add(gtsam_gnss.ClockFactor_CCDD(keyC1, keyC2, keyD1, keyD2, dtgps, noise_clk));
             end
-            % Between clock factor
-            if obs.clkjump(i+1)
-                graph.add(gtsam.BetweenFactorVector(keyC1, keyC2, zeros(7,1), noise_between_clkjump));
-            else
-                graph.add(gtsam.BetweenFactorVector(keyC1, keyC2, zeros(7,1), noise_between_clk));
-            end
         end
     end
     if ~ismember(setting.Phone,["sm-a325f","samsunga32"])
@@ -199,9 +187,9 @@ for i=progress(is:ie-1)
                         noise = noise_sigmas(obserr.(f).L(i,j));
                         noise_rubust = noise_robust(prm.L_kernel, noise);
                         if ismember(phone,["sm-a205u","sm-a217m","sm-a505g","sm-a600t","sm-a505u"])
-                            graph.add(gtsam_gnss.TDCPFactor_XXDD(keyX1, keyX2, keyD1, keyD2, losvec, tdcp+prm.Loffset, orgx1, orgx2, noise_rubust));
+                            graph.add(gtsam_gnss.TDCPFactor_XXDD(keyX1, keyX2, keyD1, keyD2, losvec, tdcp+prm.Loffset, dtgps, orgx1, orgx2, noise_rubust));
                         elseif ismember(phone,"samsunga325g")
-                            graph.add(gtsam_gnss.TDCPFactor_XXDD(keyX1, keyX2, keyD1, keyD2, losvec, tdcp, orgx1, orgx2, noise_rubust));
+                            graph.add(gtsam_gnss.TDCPFactor_XXDD(keyX1, keyX2, keyD1, keyD2, losvec, tdcp, dtgps, orgx1, orgx2, noise_rubust));
                         else
                             graph.add(gtsam_gnss.TDCPFactor_XXCC(keyX1, keyX2, keyC1, keyC2, losvec, tdcp, orgx1, orgx2, noise_rubust));
                         end

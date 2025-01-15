@@ -129,11 +129,9 @@ prm.Loffset = 1.117; % m
 
 %% Graph optimization
 % Clock factor
-prm.sigma_between_clk_gps = 1000;
-prm.sigma_between_clk_others = 0.0001;
+prm.sigma_motion_clk = 0.1;
 
 % Motion factor
-prm.sigma_motion_clk = 0.1;
 if setting.Type == "Street"
     prm.sigma_motion = 0.05;
 else
